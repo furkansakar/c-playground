@@ -6,7 +6,6 @@ int find_length(int value)
     int count = 0;
     while (value != 0)
     {
-        // n = n/10
         value /= 10;
         ++count;
     }
@@ -15,25 +14,25 @@ int find_length(int value)
 
 void main(void)
 {
-    // buffer
+
     FILE *fp;
     FILE *fp_replace;
+    int number = 0;
 
     fp = fopen("test.txt", "r");
 
-    int number;
-    while (fscanf(fp, "%d", &number) == 1) // expect 1 successful conversion
+    while (fscanf(fp, "%d", &number) == 1) 
     {
         // process buffer
         printf("Number: %i", number);
         fp_replace = fopen("test.txt", "r+");
         int number2;
-        int any_occur = 0;
-        while (fscanf(fp_replace, "%d", &number2) == 1) // expect 1 successful conversion
+        int number_of_occurance = 0;
+        while (fscanf(fp_replace, "%d", &number2) == 1)
         {
             if (number == number2)
             {
-                if (any_occur>0)
+                if (number_of_occurance>0)
                 {
                     fseek(fp_replace, -find_length(number), SEEK_CUR);
                     for (int i = 0; i < find_length(number); i++)
@@ -42,7 +41,7 @@ void main(void)
                     }
                     fflush(fp_replace);
                 }
-                any_occur=1;
+                number_of_occurance++;
             }
         }
         fclose(fp_replace);
@@ -55,8 +54,6 @@ void main(void)
     {
         // some other error interrupted the read
     }
-
-    //fputs("This is testing for fputs...\n", fp);
 
     fclose(fp);
 }
